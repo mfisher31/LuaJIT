@@ -6,6 +6,31 @@ else
     jitlib_install_dir = 'share' / ( 'luajit-' + meson.project_version() ) / 'jit'
 endif
 
+minilua = executable('minilua', 'host/minilua.c', dependencies: libm, install: false, native: true)
+
+git = find_program('git', required: true)
+
+luajit_relver_txt = custom_target(
+    build_by_default: true,
+    input: git.full_path(),
+    output: 'luajit_relver.txt',
+    install: false,
+    capture: true,
+    command: [ git, 'show', '--format=%ct' ]
+)
+
+luajit_rolling_h = files('luajit_rolling.h')
+genversion_lua = files('host/genversion.lua')
+
+luajit_h = custom_target ('luajit.h', 
+    build_by_default: true,
+    input: luajit_relver_txt,
+    output: 'luajit.h',
+    install: true,
+    install_dir: 'include' / 'luajit-2.1',
+    command: [ minilua, genversion_lua, luajit_rolling_h, '@INPUT@', '@OUTPUT@' ])
+
+
 subdir('host')
 
 ljlib_sources = [
@@ -110,7 +135,8 @@ vmdef = custom_target('vmdef.lua',
     command : [buildvm, '-m', 'vmdef', '-o', '@OUTPUT@', '@INPUT@']
 )
 
-libluajit = library(lj_libname, ljlib_sources + ljcore_sources + buildvm_headers,
+libluajit = library(lj_libname, [ 
+    ljlib_sources, ljcore_sources, buildvm_headers, luajit_h ],
     include_directories: luajit_source_dir,
     c_args: lj_defines,
     name_prefix: lj_libprefix,
@@ -143,6 +169,6 @@ pkg.generate(libluajit,
     url : 'http://luajit.org',
 )
 
-install_headers('lua.h', 'lualib.h', 'lauxlib.h', 'luaconf.h', 'lua.hpp', 'luajit.h')
+install_headers('lua.h', 'lualib.h', 'lauxlib.h', 'luaconf.h', 'lua.hpp')
 
 subdir('jit')

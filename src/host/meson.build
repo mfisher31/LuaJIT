@@ -1,4 +1,3 @@
-minilua = executable('minilua', 'minilua.c', dependencies: libm, install: false, native: true)
 
 lj_arch_run = cc.run(lj_arch_test_source)
 if not lj_arch_run.compiled() or lj_arch_run.returncode() != 0
@@ -31,7 +30,7 @@ buildvm_sources = ['buildvm.c', 'buildvm_asm.c', 'buildvm_peobj.c', 'buildvm_lib
 buildvm_sources += buildvm_arch_h
 
 buildvm = executable('buildvm',
-    buildvm_sources,
+    [ buildvm_sources, luajit_h ],
     include_directories: luajit_source_dir,
     c_args: buildvm_defines,
     dependencies: libm,
