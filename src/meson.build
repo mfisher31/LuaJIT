@@ -145,12 +145,12 @@ libluajit = library(lj_libname, [
 )
 
 if get_option('app')
-    luajit = executable('luajit', ljmain_sources,
+    luajit = executable('luajit', [ ljmain_sources, luajit_h ],
         c_args: lj_defines,
         link_with: libluajit,
         link_args: lj_linkargs,
-        include_directories: luajit_source_dir,
-        dependencies: luajit_dependencies,
+        include_directories: [ luajit_source_dir ],
+        dependencies: [ luajit_dependencies ],
         install: true
     )
 endif
