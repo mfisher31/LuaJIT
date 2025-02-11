@@ -11,3 +11,5 @@
 .tags
 build*
 /.vscode/
+.meson-subproject*
+
