@@ -169,6 +169,7 @@ pkg.generate(libluajit,
     url : 'http://luajit.org',
 )
 
-install_headers('lua.h', 'lualib.h', 'lauxlib.h', 'luaconf.h', 'lua.hpp')
+install_headers('lua.h', 'lualib.h', 'lauxlib.h', 'luaconf.h', 'lua.hpp',
+    subdir: 'luajit-2.1')
 
 subdir('jit')
