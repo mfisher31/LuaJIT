@@ -1,6 +1,6 @@
 
 if not meson.is_cross_build()
-    lj_arch_run = cc.run(lj_arch_test_source)
+    lj_arch_run = cc.run(lj_arch_test_source, args: [ '-std=c99' ])
     if not lj_arch_run.compiled() or lj_arch_run.returncode() != 0
         error('error running luajit arch testing program: ' + lj_arch_run.stderr())
     endif

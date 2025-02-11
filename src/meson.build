@@ -138,7 +138,7 @@ vmdef = custom_target('vmdef.lua',
 libluajit = library(lj_libname, [ 
     ljlib_sources, ljcore_sources, buildvm_headers, luajit_h ],
     include_directories: luajit_source_dir,
-    c_args: lj_defines,
+    c_args: [lj_defines],
     name_prefix: lj_libprefix,
     dependencies: luajit_dependencies,
     install: true

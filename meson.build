@@ -1,4 +1,9 @@
-project('luajit', 'c', version : '2.1', default_options : ['c_winlibs='])
+project('luajit', 'c', version : '2.1', 
+   default_options: [
+        'b_ndebug=if-release',
+        'buildtype=custom',
+        'c_winlibs='
+    ])
 
 pkg = import('pkgconfig')
 
