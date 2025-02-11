@@ -86,9 +86,7 @@ if not get_option ('ffi')
     lj_defines += '-DLUAJIT_DISABLE_FFI'
 endif
 
-if get_option('lua52compat')
-    lj_defines += '-DLUAJIT_ENABLE_LUA52COMPAT'
-endif
+
 
 if not get_option('jit')
     lj_defines += '-DLUAJIT_DISABLE_JIT'

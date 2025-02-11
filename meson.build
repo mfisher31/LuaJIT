@@ -19,4 +19,8 @@ dynasm = files('dynasm/dynasm.lua')
 
 install_man('etc/luajit.1')
 
+if get_option('lua52compat')
+    add_project_arguments (['-DLUAJIT_ENABLE_LUA52COMPAT'], language: 'c')
+endif
+
 subdir('src')
