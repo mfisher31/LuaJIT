@@ -82,8 +82,24 @@ elif host_machine.system() != 'windows'
     endif
 endif
 
+if not get_option ('ffi')
+    lj_defines += '-DLUAJIT_DISABLE_FFI'
+endif
+
+if get_option('lua52compat')
+    lj_defines += '-DLUAJIT_ENABLE_LUA52COMPAT'
+endif
+
+if not get_option('jit')
+    lj_defines += '-DLUAJIT_DISABLE_JIT'
+endif
+
 if get_option('portable')
     lj_defines += '-DLUAJIT_PORTABLE_INSTALL'
+endif
+
+if not get_option('gc64')
+    lj_defines += '-DLUAJIT_DISABLE_GC64'
 endif
 
 lj_linkargs = []
