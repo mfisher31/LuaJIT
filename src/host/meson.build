@@ -1,9 +1,16 @@
 
-lj_arch_run = cc.run(lj_arch_test_source)
-if not lj_arch_run.compiled() or lj_arch_run.returncode() != 0
-    error('error running luajit arch testing program: ' + lj_arch_run.stderr())
+if not meson.is_cross_build()
+    lj_arch_run = cc.run(lj_arch_test_source)
+    if not lj_arch_run.compiled() or lj_arch_run.returncode() != 0
+        error('error running luajit arch testing program: ' + lj_arch_run.stderr())
+    endif
+    lj_arch_list = lj_arch_run.stdout().split(':')
+else
+    lj_arch_list = [ 'x86', 'arm',
+        '-DLUAJIT_TARGET=LUAJIT_ARCH_ARM,-DLJ_ARCH_HASFPU=1,-DLJ_ABI_SOFTFP=0',
+        '-D,ENDIAN_LE,-D,JIT,-D,FFI,-D,FPU,-D,HFABI,-D,VER='
+    ]
 endif
-lj_arch_list = lj_arch_run.stdout().split(':')
 
 # Print output of lj_arch_test for information purpose.
 foreach line : lj_arch_list
